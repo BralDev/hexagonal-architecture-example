@@ -31,8 +31,8 @@ public class JpaUserRepositoryAdapter implements UserRepositoryPort{
     }
 
     @Override
-    public List<User> findByFirstName(String firstName) {
-        return springDataUserRepository.findByFirstName(firstName)
+    public List<User> findByFirstNameContaining(String firstName) {
+        return springDataUserRepository.findByFirstNameContainingIgnoreCase(firstName)
                 .stream()
                 .map(userEntity -> new User(
                         userEntity.id(),
@@ -43,8 +43,8 @@ public class JpaUserRepositoryAdapter implements UserRepositoryPort{
     }
 
     @Override
-    public List<User> findByLastName(String lastName) {
-        return springDataUserRepository.findByLastName(lastName)
+    public List<User> findByLastNameContaining(String lastName) {
+        return springDataUserRepository.findByLastNameContainingIgnoreCase(lastName)
                 .stream()
                 .map(userEntity -> new User(
                         userEntity.id(),

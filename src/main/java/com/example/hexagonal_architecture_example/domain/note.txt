@@ -1,1 +1,0 @@
-En este paquete no se debe contener ninguna relacion con algun framework o librería, puro lenguaje JAVA.

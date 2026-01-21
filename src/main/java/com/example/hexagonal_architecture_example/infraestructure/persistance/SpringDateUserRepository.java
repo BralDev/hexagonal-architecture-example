@@ -5,6 +5,6 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SpringDateUserRepository extends JpaRepository<UserEntity, Long>{
-    List<UserEntity> findByFirstName(String firstName);
-    List<UserEntity> findByLastName(String lastName);
+    List<UserEntity> findByFirstNameContainingIgnoreCase(String firstName);
+    List<UserEntity> findByLastNameContainingIgnoreCase(String lastName);
 }

@@ -14,6 +14,6 @@ public class GetUsersByLastNameUseCase {
     }
 
     public List<User> execute(String lastName) {
-        return userRepository.findByLastName(lastName);
+        return userRepository.findByLastNameContaining(lastName);
     }
 }

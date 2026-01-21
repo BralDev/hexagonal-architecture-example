@@ -8,6 +8,6 @@ import com.example.hexagonal_architecture_example.domain.model.User;
 public interface UserRepositoryPort {
     User save(User user);
     Optional<User> findById(Long id);
-    List<User> findByFirstName(String firstName);
-    List<User> findByLastName(String lastName);
+    List<User> findByFirstNameContaining(String firstName);
+    List<User> findByLastNameContaining(String lastName);
 }
