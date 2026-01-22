@@ -1,7 +1,6 @@
 package com.example.hexagonal_architecture_example.application.port.in;
 
-import java.util.List;
-
+import com.example.hexagonal_architecture_example.application.common.PageResult;
 import com.example.hexagonal_architecture_example.application.port.out.UserRepositoryPort;
 import com.example.hexagonal_architecture_example.domain.model.User;
 
@@ -13,7 +12,15 @@ public class GetUsersByFirstNameUseCase {
         this.userRepository = userRepository;
     }
 
-    public List<User> execute(String firstName) {
-        return userRepository.findByFirstNameContaining(firstName);
+    public PageResult<User> execute(
+        String firstName,
+        int page,
+        int size
+    ) {
+        return userRepository.findByFirstNameContaining(
+            firstName,
+            page,
+            size
+        );
     }
 }

@@ -2,6 +2,7 @@ package com.example.hexagonal_architecture_example.infraestructure.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.hexagonal_architecture_example.application.common.PageResult;
 import com.example.hexagonal_architecture_example.application.port.in.CreateUserUseCase;
 import com.example.hexagonal_architecture_example.application.port.in.GetUserByIdUseCase;
 import com.example.hexagonal_architecture_example.application.port.in.GetUsersByFirstNameUseCase;
@@ -10,13 +11,12 @@ import com.example.hexagonal_architecture_example.domain.model.User;
 import com.example.hexagonal_architecture_example.infraestructure.controller.dto.UserReponse;
 import com.example.hexagonal_architecture_example.infraestructure.controller.dto.UserRequest;
 
-import java.util.List;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/users")
@@ -63,19 +63,39 @@ public class UserController {
                 user.lastName());
     }
 
-    @GetMapping("/search/firstname/{firstName}")
-    public List<UserReponse> getByFirstName(@PathVariable String firstName) {
-        return getUsersByFirstNameUseCase.execute(firstName)
-                .stream()
-                .map(users -> new UserReponse(users.id(), users.firstName(), users.lastName()))
-                .toList();
+    @GetMapping("/search/firstname")
+    public PageResult<UserReponse> searchByFirstName(
+            @RequestParam String value,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        PageResult<User> result = getUsersByFirstNameUseCase.execute(value, page, size);
+
+        return new PageResult<>(
+                result.content().stream()
+                        .map(u -> new UserReponse(u.id(), u.firstName(), u.lastName()))
+                        .toList(),
+                result.page(),
+                result.size(),
+                result.totalElements(),
+                result.totalPages());
     }
 
-    @GetMapping("/search/lastname/{lastName}")
-    public List<UserReponse> getByLastName(@PathVariable String lastName) {
-        return getUsersByLastNameUseCase.execute(lastName)
-                .stream()
-                .map(users -> new UserReponse(users.id(), users.firstName(), users.lastName()))
-                .toList();
+    @GetMapping("/search/lastname")
+    public PageResult<UserReponse> searchByLastName(
+            @RequestParam String value,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        PageResult<User> result = getUsersByLastNameUseCase.execute(value, page, size);
+
+        return new PageResult<>(
+                result.content().stream()
+                        .map(u -> new UserReponse(u.id(), u.firstName(), u.lastName()))
+                        .toList(),
+                result.page(),
+                result.size(),
+                result.totalElements(),
+                result.totalPages());
     }
 }
