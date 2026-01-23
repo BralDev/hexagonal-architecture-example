@@ -44,8 +44,16 @@ public class JpaUserRepositoryAdapter implements UserRepositoryPort {
         public PageResult<User> findByFirstNameContaining(
                         String firstName,
                         int page,
-                        int size) {
-                Pageable pageable = PageRequest.of(page, size);
+                        int size,
+                        UserSortField sortField,
+                        SortDirection direction) {
+                Sort sort = Sort.by(
+                                direction == SortDirection.ASC
+                                                ? Sort.Direction.ASC
+                                                : Sort.Direction.DESC,
+                                sortField.column());
+
+                Pageable pageable = PageRequest.of(page, size, sort);
 
                 Page<UserEntity> result = springDataUserRepository
                                 .findByFirstNameContainingIgnoreCase(firstName, pageable);
@@ -66,8 +74,16 @@ public class JpaUserRepositoryAdapter implements UserRepositoryPort {
         public PageResult<User> findByLastNameContaining(
                         String lastName,
                         int page,
-                        int size) {
-                Pageable pageable = PageRequest.of(page, size);
+                        int size,
+                        UserSortField sortField,
+                        SortDirection direction) {
+                Sort sort = Sort.by(
+                                direction == SortDirection.ASC
+                                                ? Sort.Direction.ASC
+                                                : Sort.Direction.DESC,
+                                sortField.column());
+
+                Pageable pageable = PageRequest.of(page, size, sort);
 
                 Page<UserEntity> result = springDataUserRepository
                                 .findByLastNameContainingIgnoreCase(lastName, pageable);

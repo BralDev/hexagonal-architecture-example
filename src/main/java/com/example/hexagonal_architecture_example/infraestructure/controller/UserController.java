@@ -26,10 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(
-    name = "Users",
-    description = "Operaciones relacionadas con usuarios"
-)
+@Tag(name = "Users", description = "Operaciones relacionadas con usuarios")
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -82,9 +79,11 @@ public class UserController {
         public PageResponse<UserReponse> searchByFirstName(
                         @RequestParam String value,
                         @RequestParam(defaultValue = "0") int page,
-                        @RequestParam(defaultValue = "10") int size) {
+                        @RequestParam(defaultValue = "10") int size,
+                        @RequestParam(required = false, defaultValue = "FIRST_NAME") UserSortField sortField,
+                        @RequestParam(required = false, defaultValue = "ASC") SortDirection direction) {
 
-                PageResult<User> result = getUsersByFirstNameUseCase.execute(value, page, size);
+                PageResult<User> result = getUsersByFirstNameUseCase.execute(value, page, size, sortField, direction);
 
                 return new PageResponse<>(
                                 result.content().stream()
@@ -101,9 +100,11 @@ public class UserController {
         public PageResponse<UserReponse> searchByLastName(
                         @RequestParam String value,
                         @RequestParam(defaultValue = "0") int page,
-                        @RequestParam(defaultValue = "10") int size) {
+                        @RequestParam(defaultValue = "10") int size,
+                        @RequestParam(required = false, defaultValue = "LAST_NAME") UserSortField sortField,
+                        @RequestParam(required = false, defaultValue = "ASC") SortDirection direction) {
 
-                PageResult<User> result = getUsersByLastNameUseCase.execute(value, page, size);
+                PageResult<User> result = getUsersByLastNameUseCase.execute(value, page, size, sortField, direction);
 
                 return new PageResponse<>(
                                 result.content().stream()
@@ -123,17 +124,16 @@ public class UserController {
                         @RequestParam(defaultValue = "0") int page,
                         @RequestParam(defaultValue = "10") int size,
                         @RequestParam(required = false, defaultValue = "ID") UserSortField sortField,
-                        @RequestParam(required = false, defaultValue = "ASC") SortDirection direction
-                ) {
+                        @RequestParam(required = false, defaultValue = "ASC") SortDirection direction) {
 
                 UserSearchFilter filter = new UserSearchFilter(firstname, lastname);
 
                 PageResult<User> result = searchUsersUseCase.execute(
-                        filter,
-                        page,
-                        size,
-                        sortField,
-                        direction);
+                                filter,
+                                page,
+                                size,
+                                sortField,
+                                direction);
 
                 return new PageResponse<>(
                                 result.content().stream()
