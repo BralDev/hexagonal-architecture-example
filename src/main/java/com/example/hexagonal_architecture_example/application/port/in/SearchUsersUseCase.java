@@ -20,15 +20,17 @@ public class SearchUsersUseCase {
             int page,
             int size,
             UserSortField sortField,
-            SortDirection direction
-    ) {
+            SortDirection direction) {
+
+        UserSortField resolvedSortField = sortField != null ? sortField : UserSortField.ID;
+
+        SortDirection resolvedDirection = direction != null ? direction : SortDirection.ASC;
+
         return userRepositoryPort.search(
                 filter,
                 page,
                 size,
-                sortField,
-                direction
-        );
+                resolvedSortField,
+                resolvedDirection);
     }
 }
-

@@ -122,8 +122,8 @@ public class UserController {
                         @RequestParam(required = false) String lastname,
                         @RequestParam(defaultValue = "0") int page,
                         @RequestParam(defaultValue = "10") int size,
-                        @RequestParam(required = false) UserSortField sortField,
-                        @RequestParam(required = false) SortDirection direction
+                        @RequestParam(required = false, defaultValue = "ID") UserSortField sortField,
+                        @RequestParam(required = false, defaultValue = "ASC") SortDirection direction
                 ) {
 
                 UserSearchFilter filter = new UserSearchFilter(firstname, lastname);
