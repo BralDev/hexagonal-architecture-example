@@ -12,6 +12,7 @@ import com.example.hexagonal_architecture_example.application.port.in.GetUsersBy
 import com.example.hexagonal_architecture_example.application.port.in.GetUsersByLastNameUseCase;
 import com.example.hexagonal_architecture_example.application.port.in.SearchUsersUseCase;
 import com.example.hexagonal_architecture_example.domain.model.User;
+import com.example.hexagonal_architecture_example.domain.model.UserStatus;
 import com.example.hexagonal_architecture_example.infraestructure.controller.dto.PageMeta;
 import com.example.hexagonal_architecture_example.infraestructure.controller.dto.PageResponse;
 import com.example.hexagonal_architecture_example.infraestructure.controller.dto.UserReponse;
@@ -55,14 +56,16 @@ public class UserController {
                 final User user = new User(
                                 null,
                                 userRequest.firstName(),
-                                userRequest.lastName());
+                                userRequest.lastName(),
+                                null);
 
                 final User userCreated = createUserUseCase.execute(user);
 
                 return new UserReponse(
                                 userCreated.id(),
                                 userCreated.firstName(),
-                                userCreated.lastName());
+                                userCreated.lastName(),
+                                userCreated.status());
         }
 
         @GetMapping("/{id}")
@@ -72,7 +75,8 @@ public class UserController {
                 return new UserReponse(
                                 user.id(),
                                 user.firstName(),
-                                user.lastName());
+                                user.lastName(),
+                                user.status());
         }
 
         @GetMapping("/search/firstname")
@@ -87,7 +91,11 @@ public class UserController {
 
                 return new PageResponse<>(
                                 result.content().stream()
-                                                .map(u -> new UserReponse(u.id(), u.firstName(), u.lastName()))
+                                                .map(u -> new UserReponse(
+                                                        u.id(),
+                                                        u.firstName(),
+                                                        u.lastName(),
+                                                        u.status()))
                                                 .toList(),
                                 new PageMeta(
                                                 result.page(),
@@ -108,7 +116,11 @@ public class UserController {
 
                 return new PageResponse<>(
                                 result.content().stream()
-                                                .map(u -> new UserReponse(u.id(), u.firstName(), u.lastName()))
+                                                .map(u -> new UserReponse(
+                                                        u.id(),
+                                                        u.firstName(),
+                                                        u.lastName(),
+                                                        u.status()))
                                                 .toList(),
                                 new PageMeta(
                                                 result.page(),
@@ -121,12 +133,13 @@ public class UserController {
         public PageResponse<UserReponse> searchUsers(
                         @RequestParam(required = false) String firstname,
                         @RequestParam(required = false) String lastname,
+                        @RequestParam(required = false) UserStatus status,
                         @RequestParam(defaultValue = "0") int page,
                         @RequestParam(defaultValue = "10") int size,
                         @RequestParam(required = false, defaultValue = "ID") UserSortField sortField,
                         @RequestParam(required = false, defaultValue = "ASC") SortDirection direction) {
 
-                UserSearchFilter filter = new UserSearchFilter(firstname, lastname);
+                UserSearchFilter filter = new UserSearchFilter(firstname, lastname, status);
 
                 PageResult<User> result = searchUsersUseCase.execute(
                                 filter,
@@ -137,7 +150,11 @@ public class UserController {
 
                 return new PageResponse<>(
                                 result.content().stream()
-                                                .map(u -> new UserReponse(u.id(), u.firstName(), u.lastName()))
+                                                .map(u -> new UserReponse(
+                                                        u.id(),
+                                                        u.firstName(),
+                                                        u.lastName(),
+                                                        u.status()))
                                                 .toList(),
                                 new PageMeta(
                                                 result.page(),

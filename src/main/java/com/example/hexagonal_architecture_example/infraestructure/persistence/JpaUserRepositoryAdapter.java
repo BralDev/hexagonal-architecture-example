@@ -28,16 +28,28 @@ public class JpaUserRepositoryAdapter implements UserRepositoryPort {
 
         @Override
         public User save(User user) {
-                UserEntity userEntity = new UserEntity(user.id(), user.firstName(), user.lastName());
+                UserEntity userEntity = new UserEntity(
+                        user.id(),
+                        user.firstName(),
+                        user.lastName(),
+                        user.status());
                 final UserEntity savedUser = springDataUserRepository.save(userEntity);
-                return new User(savedUser.id(), savedUser.firstName(), savedUser.lastName());
+                return new User(
+                        savedUser.id(),
+                        savedUser.firstName(),
+                        savedUser.lastName(),
+                        savedUser.status());
         }
 
         @Override
         public Optional<User> findById(Long id) {
                 final UserEntity savedUser = springDataUserRepository.findById(id)
                                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
-                return Optional.of(new User(savedUser.id(), savedUser.firstName(), savedUser.lastName()));
+                return Optional.of(new User(
+                        savedUser.id(),
+                        savedUser.firstName(),
+                        savedUser.lastName(),
+                        savedUser.status()));
         }
 
         @Override
@@ -59,7 +71,7 @@ public class JpaUserRepositoryAdapter implements UserRepositoryPort {
                                 .findByFirstNameContainingIgnoreCase(firstName, pageable);
 
                 List<User> users = result.getContent().stream()
-                                .map(e -> new User(e.id(), e.firstName(), e.lastName()))
+                                .map(e -> new User(e.id(), e.firstName(), e.lastName(), e.status()))
                                 .toList();
 
                 return new PageResult<>(
@@ -89,7 +101,7 @@ public class JpaUserRepositoryAdapter implements UserRepositoryPort {
                                 .findByLastNameContainingIgnoreCase(lastName, pageable);
 
                 List<User> users = result.getContent().stream()
-                                .map(e -> new User(e.id(), e.firstName(), e.lastName()))
+                                .map(e -> new User(e.id(), e.firstName(), e.lastName(), e.status()))
                                 .toList();
 
                 return new PageResult<>(
@@ -118,12 +130,13 @@ public class JpaUserRepositoryAdapter implements UserRepositoryPort {
 
                 Specification<UserEntity> spec = Specification
                                 .where(UserSpecifications.firstNameContains(filter.firstName()))
-                                .and(UserSpecifications.lastNameContains(filter.lastName()));
+                                .and(UserSpecifications.lastNameContains(filter.lastName())
+                                .and(UserSpecifications.hasStatus(filter.status())));
 
                 Page<UserEntity> result = springDataUserRepository.findAll(spec, pageable);
 
                 List<User> users = result.getContent().stream()
-                                .map(e -> new User(e.id(), e.firstName(), e.lastName()))
+                                .map(e -> new User(e.id(), e.firstName(), e.lastName(), e.status()))
                                 .toList();
 
                 return new PageResult<>(
