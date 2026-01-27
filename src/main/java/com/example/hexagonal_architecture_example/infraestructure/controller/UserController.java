@@ -82,20 +82,27 @@ public class UserController {
         @GetMapping("/search/firstname")
         public PageResponse<UserReponse> searchByFirstName(
                         @RequestParam String value,
+                        @RequestParam(required = false, defaultValue = "ACTIVE") UserStatus status,
                         @RequestParam(defaultValue = "0") int page,
                         @RequestParam(defaultValue = "10") int size,
                         @RequestParam(required = false, defaultValue = "FIRST_NAME") UserSortField sortField,
                         @RequestParam(required = false, defaultValue = "ASC") SortDirection direction) {
 
-                PageResult<User> result = getUsersByFirstNameUseCase.execute(value, page, size, sortField, direction);
+                PageResult<User> result = getUsersByFirstNameUseCase.execute(
+                                value,
+                                status,
+                                page,
+                                size,
+                                sortField,
+                                direction);
 
                 return new PageResponse<>(
                                 result.content().stream()
                                                 .map(u -> new UserReponse(
-                                                        u.id(),
-                                                        u.firstName(),
-                                                        u.lastName(),
-                                                        u.status()))
+                                                                u.id(),
+                                                                u.firstName(),
+                                                                u.lastName(),
+                                                                u.status()))
                                                 .toList(),
                                 new PageMeta(
                                                 result.page(),
@@ -107,20 +114,27 @@ public class UserController {
         @GetMapping("/search/lastname")
         public PageResponse<UserReponse> searchByLastName(
                         @RequestParam String value,
+                        @RequestParam(required = false, defaultValue = "ACTIVE") UserStatus status,
                         @RequestParam(defaultValue = "0") int page,
                         @RequestParam(defaultValue = "10") int size,
                         @RequestParam(required = false, defaultValue = "LAST_NAME") UserSortField sortField,
                         @RequestParam(required = false, defaultValue = "ASC") SortDirection direction) {
 
-                PageResult<User> result = getUsersByLastNameUseCase.execute(value, page, size, sortField, direction);
+                PageResult<User> result = getUsersByLastNameUseCase.execute(
+                                value, 
+                                status, 
+                                page, 
+                                size, 
+                                sortField,
+                                direction);
 
                 return new PageResponse<>(
                                 result.content().stream()
                                                 .map(u -> new UserReponse(
-                                                        u.id(),
-                                                        u.firstName(),
-                                                        u.lastName(),
-                                                        u.status()))
+                                                                u.id(),
+                                                                u.firstName(),
+                                                                u.lastName(),
+                                                                u.status()))
                                                 .toList(),
                                 new PageMeta(
                                                 result.page(),
@@ -151,10 +165,10 @@ public class UserController {
                 return new PageResponse<>(
                                 result.content().stream()
                                                 .map(u -> new UserReponse(
-                                                        u.id(),
-                                                        u.firstName(),
-                                                        u.lastName(),
-                                                        u.status()))
+                                                                u.id(),
+                                                                u.firstName(),
+                                                                u.lastName(),
+                                                                u.status()))
                                                 .toList(),
                                 new PageMeta(
                                                 result.page(),

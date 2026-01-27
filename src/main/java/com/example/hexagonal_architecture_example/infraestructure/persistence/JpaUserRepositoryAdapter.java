@@ -53,66 +53,6 @@ public class JpaUserRepositoryAdapter implements UserRepositoryPort {
         }
 
         @Override
-        public PageResult<User> findByFirstNameContaining(
-                        String firstName,
-                        int page,
-                        int size,
-                        UserSortField sortField,
-                        SortDirection direction) {
-                Sort sort = Sort.by(
-                                direction == SortDirection.ASC
-                                                ? Sort.Direction.ASC
-                                                : Sort.Direction.DESC,
-                                sortField.column());
-
-                Pageable pageable = PageRequest.of(page, size, sort);
-
-                Page<UserEntity> result = springDataUserRepository
-                                .findByFirstNameContainingIgnoreCase(firstName, pageable);
-
-                List<User> users = result.getContent().stream()
-                                .map(e -> new User(e.id(), e.firstName(), e.lastName(), e.status()))
-                                .toList();
-
-                return new PageResult<>(
-                                users,
-                                result.getNumber(),
-                                result.getSize(),
-                                result.getTotalElements(),
-                                result.getTotalPages());
-        }
-
-        @Override
-        public PageResult<User> findByLastNameContaining(
-                        String lastName,
-                        int page,
-                        int size,
-                        UserSortField sortField,
-                        SortDirection direction) {
-                Sort sort = Sort.by(
-                                direction == SortDirection.ASC
-                                                ? Sort.Direction.ASC
-                                                : Sort.Direction.DESC,
-                                sortField.column());
-
-                Pageable pageable = PageRequest.of(page, size, sort);
-
-                Page<UserEntity> result = springDataUserRepository
-                                .findByLastNameContainingIgnoreCase(lastName, pageable);
-
-                List<User> users = result.getContent().stream()
-                                .map(e -> new User(e.id(), e.firstName(), e.lastName(), e.status()))
-                                .toList();
-
-                return new PageResult<>(
-                                users,
-                                result.getNumber(),
-                                result.getSize(),
-                                result.getTotalElements(),
-                                result.getTotalPages());
-        }
-
-        @Override
         public PageResult<User> search(
                         UserSearchFilter filter,
                         int page,
