@@ -66,6 +66,7 @@ public class UserController {
                                 userCreated.id(),
                                 userCreated.firstName(),
                                 userCreated.lastName(),
+                                userCreated.birthDate(),
                                 userCreated.status());
         }
 
@@ -77,6 +78,7 @@ public class UserController {
                                 user.id(),
                                 user.firstName(),
                                 user.lastName(),
+                                user.birthDate(),
                                 user.status());
         }
 
@@ -103,6 +105,7 @@ public class UserController {
                                                                 u.id(),
                                                                 u.firstName(),
                                                                 u.lastName(),
+                                                                u.birthDate(),
                                                                 u.status()))
                                                 .toList(),
                                 new PageMeta(
@@ -135,6 +138,7 @@ public class UserController {
                                                                 u.id(),
                                                                 u.firstName(),
                                                                 u.lastName(),
+                                                                u.birthDate(),
                                                                 u.status()))
                                                 .toList(),
                                 new PageMeta(
@@ -169,6 +173,7 @@ public class UserController {
                                                                 u.id(),
                                                                 u.firstName(),
                                                                 u.lastName(),
+                                                                u.birthDate(),
                                                                 u.status()))
                                                 .toList(),
                                 new PageMeta(
