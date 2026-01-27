@@ -17,7 +17,8 @@ public class CreateUserUseCase {
                 null,
                 user.firstName(),
                 user.lastName(),
-                user.status() == null ? UserStatus.ACTIVE : user.status()
+                user.status() == null ? UserStatus.ACTIVE : user.status(),
+                user.birthDate()
             );
         return userRepository.save(toSave);
     }

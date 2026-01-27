@@ -57,7 +57,8 @@ public class UserController {
                                 null,
                                 userRequest.firstName(),
                                 userRequest.lastName(),
-                                null);
+                                null,
+                                userRequest.birthDate());
 
                 final User userCreated = createUserUseCase.execute(user);
 

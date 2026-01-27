@@ -1,5 +1,7 @@
 package com.example.hexagonal_architecture_example.infraestructure.persistence;
 
+import java.time.LocalDate;
+
 import com.example.hexagonal_architecture_example.domain.model.UserStatus;
 
 import jakarta.persistence.Column;
@@ -26,18 +28,22 @@ public class UserEntity {
     private String lastName;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "status",nullable = false)
     private UserStatus status;
+
+    @Column(name = "birth_date", nullable = true)
+    private LocalDate birthDate;
 
     protected UserEntity() {
         // Requerido por JPA
     }
 
-    public UserEntity(Long id, String firstName, String lastName, UserStatus status) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.status = status;
+    public UserEntity(Long id, String firstName, String lastName, UserStatus status, LocalDate birthDate) {
+         this.id = id;
+         this.firstName = firstName;
+         this.lastName = lastName;
+         this.status = status;
+         this.birthDate = birthDate;
     }
 
     public Long id() {
@@ -54,6 +60,10 @@ public class UserEntity {
 
     public UserStatus status() {
         return status;
+    }
+
+    public LocalDate birthDate() {
+        return birthDate;
     }
 }
 

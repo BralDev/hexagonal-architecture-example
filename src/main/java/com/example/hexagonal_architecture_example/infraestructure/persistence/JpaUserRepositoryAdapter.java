@@ -32,13 +32,15 @@ public class JpaUserRepositoryAdapter implements UserRepositoryPort {
                         user.id(),
                         user.firstName(),
                         user.lastName(),
-                        user.status());
+                        user.status(),
+                        user.birthDate());
                 final UserEntity savedUser = springDataUserRepository.save(userEntity);
                 return new User(
                         savedUser.id(),
                         savedUser.firstName(),
                         savedUser.lastName(),
-                        savedUser.status());
+                        savedUser.status(),
+                        savedUser.birthDate());
         }
 
         @Override
@@ -49,7 +51,8 @@ public class JpaUserRepositoryAdapter implements UserRepositoryPort {
                         savedUser.id(),
                         savedUser.firstName(),
                         savedUser.lastName(),
-                        savedUser.status()));
+                        savedUser.status(),
+                        savedUser.birthDate()));
         }
 
         @Override
@@ -76,7 +79,12 @@ public class JpaUserRepositoryAdapter implements UserRepositoryPort {
                 Page<UserEntity> result = springDataUserRepository.findAll(spec, pageable);
 
                 List<User> users = result.getContent().stream()
-                                .map(e -> new User(e.id(), e.firstName(), e.lastName(), e.status()))
+                                .map(e -> new User(
+                                        e.id(),
+                                        e.firstName(),
+                                        e.lastName(),
+                                        e.status(),
+                                        e.birthDate()))
                                 .toList();
 
                 return new PageResult<>(
