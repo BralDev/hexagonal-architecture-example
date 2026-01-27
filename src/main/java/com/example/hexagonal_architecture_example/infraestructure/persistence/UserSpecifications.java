@@ -1,5 +1,7 @@
 package com.example.hexagonal_architecture_example.infraestructure.persistence;
 
+import java.time.LocalDate;
+
 import org.springframework.data.jpa.domain.Specification;
 
 import com.example.hexagonal_architecture_example.domain.model.UserStatus;
@@ -26,8 +28,20 @@ public final class UserSpecifications {
         }
 
         public static Specification<UserEntity> hasStatus(UserStatus status) {
-                return (root, query, cb) -> status == null 
-                                ? null 
+                return (root, query, cb) -> status == null
+                                ? null
                                 : cb.equal(root.get("status"), status);
+        }
+
+        public static Specification<UserEntity> birthDateFrom(LocalDate from) {
+                return (root, query, cb) -> from == null
+                                ? null
+                                : cb.greaterThanOrEqualTo(root.get("birthDate"), from);
+        }
+
+        public static Specification<UserEntity> birthDateTo(LocalDate to) {
+                return (root, query, cb) -> to == null
+                                ? null
+                                : cb.lessThanOrEqualTo(root.get("birthDate"), to);
         }
 }

@@ -18,6 +18,9 @@ import com.example.hexagonal_architecture_example.infraestructure.controller.dto
 import com.example.hexagonal_architecture_example.infraestructure.controller.dto.UserReponse;
 import com.example.hexagonal_architecture_example.infraestructure.controller.dto.UserRequest;
 
+import java.time.LocalDate;
+
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -125,10 +128,10 @@ public class UserController {
                         @RequestParam(required = false, defaultValue = "ASC") SortDirection direction) {
 
                 PageResult<User> result = getUsersByLastNameUseCase.execute(
-                                value, 
-                                status, 
-                                page, 
-                                size, 
+                                value,
+                                status,
+                                page,
+                                size,
                                 sortField,
                                 direction);
 
@@ -153,12 +156,19 @@ public class UserController {
                         @RequestParam(required = false) String firstname,
                         @RequestParam(required = false) String lastname,
                         @RequestParam(required = false, defaultValue = "ACTIVE") UserStatus status,
+                        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate birthDateFrom,
+                        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate birthDateTo,
                         @RequestParam(defaultValue = "0") int page,
                         @RequestParam(defaultValue = "10") int size,
                         @RequestParam(required = false, defaultValue = "ID") UserSortField sortField,
                         @RequestParam(required = false, defaultValue = "ASC") SortDirection direction) {
 
-                UserSearchFilter filter = new UserSearchFilter(firstname, lastname, status);
+                UserSearchFilter filter = new UserSearchFilter(
+                                firstname,
+                                lastname,
+                                status,
+                                birthDateFrom,
+                                birthDateTo);
 
                 PageResult<User> result = searchUsersUseCase.execute(
                                 filter,

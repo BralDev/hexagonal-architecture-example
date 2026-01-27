@@ -26,7 +26,7 @@ public class GetUsersByFirstNameUseCase {
 
         UserStatus resolvedStatus = status != null ? status : UserStatus.ACTIVE;
 
-        UserSearchFilter filter = new UserSearchFilter(firstName, null, resolvedStatus);
+        UserSearchFilter filter = new UserSearchFilter(firstName, null, resolvedStatus, null, null);
 
         UserSortField resolvedSortField = sortField != null ? sortField : UserSortField.FIRST_NAME;
 
