@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "Users", description = "Operaciones relacionadas con usuarios")
@@ -156,8 +157,20 @@ public class UserController {
                         @RequestParam(required = false) String firstname,
                         @RequestParam(required = false) String lastname,
                         @RequestParam(required = false, defaultValue = "ACTIVE") UserStatus status,
-                        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate birthDateFrom,
-                        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate birthDateTo,
+                        @RequestParam(required = false)
+                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                @Schema(
+                                description = "Fecha de nacimiento desde, ejemplo: 1990-01-01",                                
+                                format = "date"
+                                )
+                                LocalDate birthDateFrom,
+                        @RequestParam(required = false)
+                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                @Schema(
+                                description = "Fecha de nacimiento hasta, ejemplo: 2005-12-20",                                
+                                format = "date"
+                                )
+                                LocalDate birthDateTo,
                         @RequestParam(defaultValue = "0") int page,
                         @RequestParam(defaultValue = "10") int size,
                         @RequestParam(required = false, defaultValue = "ID") UserSortField sortField,
